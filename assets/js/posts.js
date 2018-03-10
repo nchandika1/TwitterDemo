@@ -2,7 +2,7 @@
  * Javascript code to render the Twitter Feed for a given user
 */
 
-var userObj = {}; // Global object to user data
+var userObj = {}; // Global object to store user data
 
 // Utility function to get the current date in the required format
 function getCurrentDate() {
@@ -19,7 +19,7 @@ function getCurrentDate() {
 	return(`${date} ${time}${ampm}`);
 }
 
-// Post Handler. Makes AJAX Post call to post user tweets
+// Post Button Click Handler
 function onClickPostHandler() {
 	// Prevent page reload
 	event.preventDefault();
@@ -29,6 +29,7 @@ function onClickPostHandler() {
 
 	var obj = { name: userObj.name, handle: userObj.handle, tweet: tweet, date: date};
 
+	// AJAX call to POST user tweets to the server
 	$.ajax({
 		url: 'http://mock.aphetech.com/feed',
 		method: 'POST',
@@ -48,7 +49,7 @@ $(document).ready(function() {
 
 		//  Insert HTML content to display user profile
 		var imgDiv = $('#photo');
-		var htmlStr = `<img class="picture" src=${response.imageUrl} alt=${response.name} height="40" width="40">`;
+		var htmlStr = `<img class="picture" src=${response.imageUrl} alt=${response.name} style="width: 100%;">`;
 		htmlStr += `<span class="name">${response.name}</span>`;
 		imgDiv.html(htmlStr);
 
@@ -68,7 +69,6 @@ $(document).ready(function() {
 	$.ajax({ 
 		url: 'http://mock.aphetech.com/feed'
 	}).then(function(response) {
-		console.log(response);
 		var tweetsDiv = $('#tweets');
 		response.forEach(function(item) {
 			var tDiv = $('<div>');
@@ -81,6 +81,6 @@ $(document).ready(function() {
 	});
 
 
-	// Define handler for Posts by the user
+	// Install Post Button click handler
 	$('#post').on('click', onClickPostHandler);
 });

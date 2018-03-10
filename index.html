@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
 <head>
 	<title>Twitter Feed</title>
-	
-	<!-- Responsiveness -->
+
+	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<!-- Google Fonts Roboto for the pase -->
+	<!-- Google Fonts Roboto for the page -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
 	<!-- Styles for the Twitter Feed page -->
@@ -16,28 +16,26 @@
 	<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 
 <body>
-	<div id="profile">
-		<!-- Display profile here -->
-		<div id="photo">
+
+	<div class="container">
+		<!-- Profile Section -->
+		<div id="profile">
+			<div id="photo"></div>
+			<hr>
+			<div id="follow"></div>
 		</div>
-		<hr>
-		<div id="follow">
+
+		<!-- Tweet Section -->
+		<div id="feed">
+			<!-- Post new feed -->
+			<form id="post-tweet" class="form-style">
+				<textarea id="post-tweet" placeholder="What's happening?" rows="4" cols="50"></textarea>
+				<button id="post"><i class="fas fa-paper-plane"></i>Post</button>
+			</form>	
+			<h1 class="heading">Recent Tweets</h1>
+			<div id="tweets"></div>
 		</div>
 	</div>
-
-	<div id="feed">
-		<!-- Post new feed -->
-		<div class="container">
-			<textarea id="text" placeholder="type something here"></textarea>
-			<button id="post"><i class="fas fa-paper-plane"></i> Post</button>
-		</div>	
-		<h1 class="heading">Recent Tweets</h1>
-		<div id="tweets">
-			<!-- Display tweets here -->
-
-		</div>
-	</div>
-	
 	<!-- JQuery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 

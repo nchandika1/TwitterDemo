@@ -1,42 +1,62 @@
 /* Main page properties */
 body {
-	position: relative;
 	font-family: 'Roboto', sans-serif;
 	background-color: #f5f5f5;
 	width: 100%;
 	height: 100%;
-	display: flex;
 }
 
-/* The page is mainly divided into two sections - user profile and user tweets */
+hr {
+	height: 1px;
+	background-color: black;
+}
+
+h1 {
+	margin-top: 20px;
+	font-size: 30px;
+}
+
+/* Flex box to help with responsiveness and also create two columns as defined below */
+.container {
+	display: flex; 
+	flex-wrap: wrap;
+}
+
+/* The page is mainly divided into 2 sections/divs - user profile and user tweets */
 #profile {
 	padding: 10px;
 	margin: 20px;
+	flex: 30%;
 }
 
 #feed {
 	padding: 10px;
 	margin: 20px;
-	flex: 1;
+	flex: 40%;
 }
 
 /* User profile display styles */
+/* User profile is mainly divided into 2 sections/divs - user #photo and #follow */
+
 #photo {
 	display: flex;
-	margin: auto;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
 }
 
 .picture {
-	height: 150px;
-	width: 150px;
+	flex: 50%;
+	max-width: 25%;
 }
 
 .name {
-	font-size: 50px;
+	font-size: xx-large;
 	font-weight: bold;
+	flex:25%;
+	max-width: 25%;
 	margin: 20px;
-	height: 150px;
-	width: 150px;
+	padding: 20px;
 }
 
 .follow-text {
@@ -45,12 +65,14 @@ body {
 	margin-right: 20px;
 }
 
-hr {
-	height: 1px;
-	background-color: black;
-}
+ /* User Tweet display styles */
+.form-style {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	height: 10%;
+} 
 
-/* User Tweet display styles */
 #post{
 	background-color: cyan;
 	padding: 10px 20px;
@@ -58,27 +80,7 @@ hr {
 	border-radius: 5px;
 	margin: 0 10px;
 	border: 2px solid black;
-	display: flex;
+	height: 30%;
 }
 
-#text {
-	padding: 20px;
-	flex: 1;
-}
-
-.container {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	align-items: flex-start;
-}
-
-h1 {
-	margin-top: 20px;
-	font-size: 30px;
-}
-
-/* Styles for the Profile items */
-
-
-
+/* Media Queries */
