@@ -6,22 +6,28 @@ var userObj = {}; // Global object to user data
 
 // Utility function to get the current date in the required format
 function getCurrentDate() {
+	var date = new Date();
 
-	var date = new Date().toDateString();
-	
-	return 0;
+	var dateStr = date.toLocaleString(); 
+
+  // LocalString gives this format: 3/9/2018, 10:20:19 AM
+  // Below string manipulations convert that into the one needed for this page's format
+	var time = dateStr.split(' ')[1].split(':').slice(0,-1).join(':');
+	var ampm = dateStr.split(' ').pop();
+	var date = dateStr.split(' ').shift().slice(0,-1);
+
+	return(`${date} ${time}${ampm}`);
 }
 
 // Post Handler. Makes AJAX Post call to post user tweets
 function onClickPostHandler() {
+	// Prevent page reload
 	event.preventDefault();
 
 	var tweet = $('#text').val().trim();
-	console.log(tweet);
-
 	var date = getCurrentDate();
 
-	var obj = { name: userObj.name, handle: userObj.handle, tweet: tweet, date:''};
+	var obj = { name: userObj.name, handle: userObj.handle, tweet: tweet, date: date};
 
 	$.ajax({
 		url: 'http://mock.aphetech.com/feed',
@@ -40,13 +46,17 @@ $(document).ready(function() {
 		url: 'http://mock.aphetech.com/profile'
 	}).then(function(response) {
 
+		//  Insert HTML content to display user profile
 		var imgDiv = $('#photo');
-		var htmlStr = `<img src=${response.imageUrl} alt=${response.name} height="40" width="40">`;
+		var htmlStr = `<img class="picture" src=${response.imageUrl} alt=${response.name} height="40" width="40">`;
 		htmlStr += `<span class="name">${response.name}</span>`;
 		imgDiv.html(htmlStr);
 
+		// Insert HTML content to display user's twitter data
 		var followDiv = $('#follow');
-		var str = `${response.tweets} tweets  ${response.followers} followers ${response.following} following`;
+		var str = `<span class="follow-text">${response.tweets} tweets</span>
+							 <span class="follow-text">${response.followers} followers</span>
+							 <span class="follow-text">${response.following} following</span>`;
 		followDiv.html(str);
 
 		// Save User Data for use with Posts
@@ -62,10 +72,10 @@ $(document).ready(function() {
 		var tweetsDiv = $('#tweets');
 		response.forEach(function(item) {
 			var tDiv = $('<div>');
-			tDiv.html(`<p><span>${item.name}</span>
-								<span>${item.handle}<span>
-								<span>${item.date}</span>
-								<p>${item.tweet}</p>`);
+			tDiv.html(`<p><span style="font-weight: bold; font-size: medium; margin-right: 10px;">${item.name}</span>
+								<span style="font-size: small; margin-right: 10px;">@${item.handle}</span>
+								<span style="font-size: small;">${item.date}</span></p>
+								<p style="font-size: small">${item.tweet}</p>`);
 			tweetsDiv.append(tDiv)
 		});
 	});
