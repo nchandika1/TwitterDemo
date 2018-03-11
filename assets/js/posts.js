@@ -23,20 +23,23 @@ function getCurrentDate() {
 function onClickPostHandler() {
 	// Prevent page reload
 	event.preventDefault();
+	console.log("clicked");
 
-	var tweet = $('#text').val().trim();
-	var date = getCurrentDate();
+	if ($('#text').val()) {
+		var tweet = $('#text').val().trim();
+		var date = getCurrentDate();
 
-	var obj = { name: userObj.name, handle: userObj.handle, tweet: tweet, date: date};
+		var obj = { name: userObj.name, handle: userObj.handle, tweet: tweet, date: date};
 
-	// AJAX call to POST user tweets to the server
-	$.ajax({
-		url: 'http://mock.aphetech.com/feed',
-		method: 'POST',
-		data: obj
-	}).then(function(response) {
-		console.log(response);
-	});
+		// AJAX call to POST user tweets to the server
+		$.ajax({
+			url: 'http://mock.aphetech.com/feed',
+			method: 'POST',
+			data: obj
+		}).then(function(response) {
+			console.log(response);
+		});
+	}
 }
 
 // Execute the following when the document is fully loaded and ready to go!
