@@ -36,15 +36,46 @@ function onClickPostHandler() {
 			url: 'http://mock.aphetech.com/feed',
 			method: 'POST',
 			data: obj
-		}).then(function(response) {
-			console.log(response);
+		}).then(function(response, error) {
+			// Do something with error?
+			if (error !== 'success') {
+				console.log("Error posting tweet: ", error)
+				return;
+			}
+
+			// Posted successfully
+			$('#text').val(''); // Clear the text area
+
+			// Reload the tweets so the latest one is shown on the page!
+			loadTweets();
 		});
 	}
 }
 
-// Execute the following when the document is fully loaded and ready to go!
-$(document).ready(function() {
+// Function to retrieve all tweets
+function loadTweets() {
 
+	// AJAX call to get the recent tweets for this user account
+	$.ajax({ 
+		url: 'http://mock.aphetech.com/feed'
+	}).then(function(response) {
+		var tweetsDiv = $('#tweets');
+		tweetsDiv.empty();
+		response.forEach(function(item) {
+			// Filter invalid entries
+			if (item.name !== undefined) {
+				var tDiv = $('<div>');
+				tDiv.html(`<p><span style="font-weight: bold; font-size: medium; margin-right: 10px;">${item.name}</span>
+									<span style="font-size: small; margin-right: 10px;">@${item.handle}</span>
+									<span style="font-size: small;">${item.date}</span></p>
+									<p style="font-size: small">${item.tweet}</p>`);
+				tweetsDiv.append(tDiv)
+			}
+		});
+	});
+}
+
+function displayUserProfile() {
 	// AJAX call to get the user information upon loading the page
 	$.ajax({
 		url: 'http://mock.aphetech.com/profile'
@@ -52,38 +83,33 @@ $(document).ready(function() {
 
 		//  Insert HTML content to display user profile
 		var imgDiv = $('#photo');
-		var htmlStr = `<img class="picture" src=${response.imageUrl} alt=${response.name} style="width: 100%;">`;
+		var htmlStr = `<img class="picture" src=${response.imageUrl} alt=${response.name}>`;
 		htmlStr += `<span class="name">${response.name}</span>`;
+
 		imgDiv.html(htmlStr);
 
 		// Insert HTML content to display user's twitter data
 		var followDiv = $('#follow');
-		var str = `<span class="follow-text">${response.tweets} tweets</span>
-							 <span class="follow-text">${response.followers} followers</span>
-							 <span class="follow-text">${response.following} following</span>`;
-		followDiv.html(str);
+		var str = `<span>${response.tweets} tweets</span>
+						 	 <span>${response.followers} followers</span>
+						 	 <span>${response.following} following</span>`;
+		followDiv.html(str);	
 
 		// Save User Data for use with Posts
 		userObj[`name`] = response.name;
 		userObj[`handle`] = response.handle;
 	});
+}
 
-	// AJAX call to get the recent tweets for this user account
-	$.ajax({ 
-		url: 'http://mock.aphetech.com/feed'
-	}).then(function(response) {
-		var tweetsDiv = $('#tweets');
-		response.forEach(function(item) {
-			var tDiv = $('<div>');
-			tDiv.html(`<p><span style="font-weight: bold; font-size: medium; margin-right: 10px;">${item.name}</span>
-								<span style="font-size: small; margin-right: 10px;">@${item.handle}</span>
-								<span style="font-size: small;">${item.date}</span></p>
-								<p style="font-size: small">${item.tweet}</p>`);
-			tweetsDiv.append(tDiv)
-		});
-	});
+// Execute the following when the document is fully loaded and ready to go!
+$(document).ready(function() {
 
+	// Display User Profile
+	displayUserProfile();
+	
+	// Get all the User's tweets
+	loadTweets();
 
 	// Install Post Button click handler
-	$('#post').on('click', onClickPostHandler);
+	$('#post-button').on('click', onClickPostHandler);
 });
